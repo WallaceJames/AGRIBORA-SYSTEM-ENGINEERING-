@@ -1,0 +1,57 @@
+﻿name: Security Scan
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main]
+
+jobs:
+  trivy-scan:
+    name: Trivy Image Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan nginx-unprivileged
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: nginxinc/nginx-unprivileged:alpine
+          format: table
+          exit-code: 0
+          severity: CRITICAL,HIGH
+
+      - name: Scan mariadb
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: mariadb:10.8
+          format: table
+          exit-code: 0
+          severity: CRITICAL,HIGH
+
+      - name: Scan redis
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: redis:alpine
+          format: table
+          exit-code: 0
+          severity: CRITICAL,HIGH
+
+  validate-manifests:
+    name: Validate Kubernetes Manifests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install kubeval
+        run: |
+          wget https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz
+          tar xf kubeval-linux-amd64.tar.gz
+          sudo mv kubeval /usr/local/bin
+
+      - name: Validate app manifests
+        run: |
+          kubeval apps/frontend/deployment.yaml
+          kubeval apps/frontend/service.yaml
+          kubeval apps/redis/deployment.yaml
+          kubeval apps/database/statefulset.yaml
