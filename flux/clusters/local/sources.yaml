@@ -1,5 +1,5 @@
 ﻿---
-apiVersion: source.toolkit.fluxcd.io/v1beta2
+apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: traefik
@@ -8,7 +8,7 @@ spec:
   interval: 1h
   url: https://helm.traefik.io/traefik
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta2
+apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: argo
@@ -17,7 +17,7 @@ spec:
   interval: 1h
   url: https://argoproj.github.io/argo-helm
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta2
+apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: external-secrets
@@ -26,7 +26,7 @@ spec:
   interval: 1h
   url: https://charts.external-secrets.io
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta2
+apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: hashicorp
