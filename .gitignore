@@ -1,0 +1,7 @@
+﻿terraform/local/terraform.tfvars
+terraform/local/.terraform/
+terraform/local/terraform.tfstate
+terraform/local/terraform.tfstate.backup
+*.tfstate
+*.tfstate.backup
+**/.terraform/
