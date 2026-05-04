@@ -26,7 +26,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: frontend
-          image: nginx:1.28-alpine
+          image: nginxinc/nginx-unprivileged:alpine
           ports:
             - containerPort: 8080
           securityContext:
@@ -37,17 +37,31 @@ spec:
                 - ALL
           volumeMounts:
             - name: html-config
-              mountPath: /usr/share/nginx/html
+              mountPath: /usr/share/nginx/html/index.html
+              subPath: index.html
             - name: nginx-cache
               mountPath: /var/cache/nginx
             - name: nginx-run
-              mountPath: /var/run
+              mountPath: /tmp
           livenessProbe:
             httpGet:
               path: /
               port: 8080
-            initialDelaySeconds: 5
+            initialDelaySeconds: 15
             periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
       volumes:
         - name: html-config
           configMap:
@@ -77,18 +91,6 @@ data:
     <body>
       <h1>Frappe HRMS</h1>
       <p>GitOps stack: Frontend + Redis + MariaDB</p>
-      <p>Managed by ArgoCD  Ingress via Traefik  Secrets from Vault + ESO</p>
+      <p>Managed by ArgoCD - Ingress via Traefik - Secrets from Vault + ESO</p>
     </body>
     </html>
-  nginx.conf: |
-    worker_processes auto;
-    pid /var/run/nginx.pid;
-    events { worker_connections 1024; }
-    http {
-      include /etc/nginx/mime.types;
-      server {
-        listen 8080;
-        root /usr/share/nginx/html;
-        index index.html;
-      }
-    }
