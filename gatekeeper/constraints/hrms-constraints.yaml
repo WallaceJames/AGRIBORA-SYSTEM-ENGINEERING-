@@ -1,0 +1,43 @@
+﻿apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: RequireResourceLimits
+metadata:
+  name: require-resource-limits-hrms
+spec:
+  match:
+    namespaces: ["hrms"]
+    kinds:
+      - apiGroups: ["apps"]
+        kinds: ["Deployment", "StatefulSet"]
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: BlockLatestImages
+metadata:
+  name: block-latest-images-hrms
+spec:
+  match:
+    namespaces: ["hrms"]
+    kinds:
+      - apiGroups: ["apps"]
+        kinds: ["Deployment", "StatefulSet"]
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: RequireNonRoot
+metadata:
+  name: require-non-root-hrms
+spec:
+  match:
+    namespaces: ["hrms"]
+    kinds:
+      - apiGroups: ["apps"]
+        kinds: ["Deployment", "StatefulSet"]
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: BlockPrivileged
+metadata:
+  name: block-privileged-hrms
+spec:
+  match:
+    namespaces: ["hrms"]
+    kinds:
+      - apiGroups: ["apps"]
+        kinds: ["Deployment", "StatefulSet"]
