@@ -17,15 +17,34 @@ spec:
         app: hrms-redis
         tier: cache
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: redis
           image: redis:alpine
           ports:
             - containerPort: 6379
           command: ["redis-server", "--requirepass", "$(REDIS_PASSWORD)"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
           env:
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: hrms-redis-secret
                   key: password
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
+      volumes:
+        - name: redis-data
+          emptyDir: {}

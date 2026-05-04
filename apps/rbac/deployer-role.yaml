@@ -1,0 +1,29 @@
+﻿apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: hrms-deployer
+  namespace: hrms
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments", "statefulsets"]
+    verbs: ["get", "list", "watch", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["pods", "services", "configmaps"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: hrms-deployer-binding
+  namespace: hrms
+subjects:
+  - kind: ServiceAccount
+    name: argocd-argocd-application-controller
+    namespace: argocd
+roleRef:
+  kind: Role
+  name: hrms-deployer
+  apiGroup: rbac.authorization.k8s.io

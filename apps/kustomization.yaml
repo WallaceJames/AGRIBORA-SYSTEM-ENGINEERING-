@@ -9,3 +9,8 @@ resources:
   - redis/service.yaml
   - database/statefulset.yaml
   - database/service.yaml
+  - netpol/default-deny-all.yaml
+  - netpol/allow-traefik-to-frontend.yaml
+  - netpol/allow-frontend-to-redis.yaml
+  - netpol/allow-frontend-to-db.yaml
+  - netpol/allow-eso-egress.yaml

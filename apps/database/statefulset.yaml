@@ -18,11 +18,24 @@ spec:
         app: hrms-mariadb
         tier: database
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: mariadb
           image: mariadb:10.8
           ports:
             - containerPort: 3306
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
