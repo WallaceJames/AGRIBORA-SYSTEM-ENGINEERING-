@@ -1,0 +1,11 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: hrms-mariadb
+  namespace: hrms
+spec:
+  selector:
+    app: hrms-mariadb
+  ports:
+    - port: 3306
+  clusterIP: None

@@ -1,0 +1,61 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hrms-frontend
+  namespace: hrms
+  labels:
+    app: hrms-frontend
+    tier: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hrms-frontend
+  template:
+    metadata:
+      labels:
+        app: hrms-frontend
+        tier: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: html-config
+              mountPath: /usr/share/nginx/html
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      volumes:
+        - name: html-config
+          configMap:
+            name: hrms-frontend-html
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hrms-frontend-html
+  namespace: hrms
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Frappe HRMS</title>
+      <style>
+        body { font-family: sans-serif; background: #0d1117; color: #e6edf3; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        h1 { color: #2ea44f; font-size: 2rem; }
+        p  { color: #8b949e; margin-top: 0.5rem; }
+      </style>
+    </head>
+    <body>
+      <h1>Frappe HRMS</h1>
+      <p>GitOps stack: Frontend + Redis + MariaDB</p>
+      <p>Managed by ArgoCD · Ingress via Traefik · Secrets from Vault + ESO</p>
+    </body>
+    </html>

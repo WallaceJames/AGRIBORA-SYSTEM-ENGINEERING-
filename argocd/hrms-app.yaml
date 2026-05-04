@@ -1,0 +1,22 @@
+﻿apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hrms
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/WallaceJames/AGRIBORA-SYSTEM-ENGINEERING-.git
+    targetRevision: main
+    path: apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: hrms
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

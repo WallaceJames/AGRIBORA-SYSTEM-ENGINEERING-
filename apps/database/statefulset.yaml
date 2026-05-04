@@ -1,0 +1,60 @@
+﻿apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: hrms-mariadb
+  namespace: hrms
+  labels:
+    app: hrms-mariadb
+    tier: database
+spec:
+  serviceName: hrms-mariadb
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hrms-mariadb
+  template:
+    metadata:
+      labels:
+        app: hrms-mariadb
+        tier: database
+    spec:
+      containers:
+        - name: mariadb
+          image: mariadb:10.8
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: hrms-db-secret
+                  key: root-password
+            - name: MYSQL_DATABASE
+              value: hrms
+            - name: MYSQL_USER
+              value: hrms_user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: hrms-db-secret
+                  key: user-password
+          args:
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+          volumeMounts:
+            - name: mariadb-data
+              mountPath: /var/lib/mysql
+          livenessProbe:
+            exec:
+              command: [mysqladmin, ping, -h, localhost]
+            initialDelaySeconds: 30
+            periodSeconds: 15
+  volumeClaimTemplates:
+    - metadata:
+        name: mariadb-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 1Gi

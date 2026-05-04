@@ -1,0 +1,31 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hrms-redis
+  namespace: hrms
+  labels:
+    app: hrms-redis
+    tier: cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hrms-redis
+  template:
+    metadata:
+      labels:
+        app: hrms-redis
+        tier: cache
+    spec:
+      containers:
+        - name: redis
+          image: redis:alpine
+          ports:
+            - containerPort: 6379
+          command: ["redis-server", "--requirepass", "$(REDIS_PASSWORD)"]
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: hrms-redis-secret
+                  key: password
