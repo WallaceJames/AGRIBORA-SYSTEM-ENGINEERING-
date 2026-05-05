@@ -1,7 +1,8 @@
-﻿terraform/local/terraform.tfvars
-terraform/local/.terraform/
-terraform/local/terraform.tfstate
-terraform/local/terraform.tfstate.backup
-*.tfstate
-*.tfstate.backup
-**/.terraform/
+﻿# Terraform
+terraform/digitalocean/terraform.tfvars
+terraform/digitalocean/.terraform/
+terraform/digitalocean/terraform.tfstate
+terraform/digitalocean/terraform.tfstate.backup
+terraform/digitalocean/tfplan
+*.tfvars
+!*.tfvars.example

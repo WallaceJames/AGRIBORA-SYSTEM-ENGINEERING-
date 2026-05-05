@@ -1,0 +1,21 @@
+﻿apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hrms-production
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/YOUR_ORG/AGRIBORA-SYSTEM-ENGINEERING
+    targetRevision: main
+    path: apps
+  destination:
+    server: https://DOKS_ENDPOINT_HERE
+    namespace: hrms
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
