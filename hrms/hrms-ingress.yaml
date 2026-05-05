@@ -1,0 +1,18 @@
+﻿apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hrms-ingress
+  namespace: hrms
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: hrms.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: hrms-frontend
+            port:
+              number: 80

@@ -1,0 +1,11 @@
+﻿# Copy this to terraform.tfvars and fill in real values
+# NEVER commit terraform.tfvars to git
+
+do_token          = "dop_v1_YOUR_TOKEN_HERE"
+spaces_access_id  = "YOUR_SPACES_ACCESS_KEY"
+spaces_secret_key = "YOUR_SPACES_SECRET_KEY"
+region            = "fra1"
+cluster_name      = "agribora-prod"
+node_size         = "s-2vcpu-4gb"
+node_count        = 2
+spaces_bucket_name = "agribora-hrms-backups"
