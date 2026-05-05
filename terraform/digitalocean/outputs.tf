@@ -19,11 +19,6 @@ output "spaces_bucket_name" {
   value       = digitalocean_spaces_bucket.hrms_backups.name
 }
 
-output "spaces_bucket_domain" {
-  description = "Spaces bucket domain"
-  value       = digitalocean_spaces_bucket.hrms_backups.bucket_domain_name
-}
-
 output "database_host" {
   description = "Managed DB host"
   value       = digitalocean_database_cluster.hrms_db.host

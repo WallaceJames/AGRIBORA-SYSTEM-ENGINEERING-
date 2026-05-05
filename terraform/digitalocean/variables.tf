@@ -29,7 +29,7 @@ variable "node_count" {
 }
 
 variable "spaces_bucket_name" {
-  description = "Name of the Spaces bucket for backups"
+  description = "Spaces bucket name for backups"
   type        = string
   default     = "agribora-hrms-backups"
 }
